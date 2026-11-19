@@ -125,7 +125,9 @@
       if (!has(value) && !EDIT) return "";
       const where = [m.channel, m.period].filter(has).map(nodot).join(", ");
       const when = has(m.asOf) ? `${m.asOf} 기준` : "";
-      const v = auto ? `<span class="v num" title="브랜드 목록에서 자동으로 세요">${esc(value)}</span>` : ed(`metrics.${i}.value`, value, "span", "v num");
+      // 방문자 화면: 숫자는 크게, 뒤 단위(만·원+·명+·건)는 작게
+      const split = (t) => { const m = String(t).match(/^([\d.,]+)\s*(.*)$/); return m && m[2] ? `${esc(m[1])}<small class="u">${esc(m[2])}</small>` : esc(t); };
+      const v = auto ? `<span class="v num" title="브랜드 목록에서 자동으로 세요">${split(value)}</span>` : EDIT ? ed(`metrics.${i}.value`, value, "span", "v num") : `<span class="v num">${split(value)}</span>`;
       const attrs = EDIT ? obj("metric", `metrics.${i}`) : ` data-metric="${i}" role="button" tabindex="0" aria-label="${esc(m.label)} 근거 보기"`;
       return `<li class="metric${hid(m)}"${attrs}>${v}${ed(`metrics.${i}.label`, m.label, "span", "l")}${when ? `<span class="m">${esc(when)}</span>` : ""}</li>`;
     }).join("");
