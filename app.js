@@ -471,6 +471,7 @@
           ${(p.reactions || []).length ? `<div><dt>성과 · 반응</dt><dd>${grid(p.reactions, "")}</dd></div>` : ""}
           ${(p.conversions || []).length ? `<div><dt>성과 · 전환</dt><dd>${grid(p.conversions, "conv")}</dd></div>` : ""}
         </dl>
+        ${(p.shots || []).filter((x) => has(x[1])).length ? `<div class="shots"><dt>${esc(p.shotsTitle || "성과 캡처")}</dt><ul>${p.shots.filter((x) => has(x[1])).map(([cap, src]) => `<li><button type="button" data-zoom="${esc(src)}" data-zoom-alt="${esc(cap)}" data-zoom-cap="${esc(cap)}"><img src="${esc(src)}" alt="${esc(cap)}" loading="lazy"><span>${esc(cap)}</span></button></li>`).join("")}</ul></div>` : ""}
         ${(p.links || []).filter((l) => has(l.url)).length ? `<div class="link-list"><dt>${esc(p.linksTitle || "함께 볼 콘텐츠")}</dt><ul>${p.links.filter((l) => has(l.url)).map((l) => `<li><a href="${esc(l.url)}" target="_blank" rel="noopener">${esc(l.label)}</a></li>`).join("")}</ul></div>` : ""}
         ${(D.testimonials || []).filter((t) => t.project === p.id && isPub(t) && okReview(t)).map((t) => `<div class="dt-review"><dt>업체 피드백 · ${esc(t.vendor)}</dt><blockquote>${esc(t.headline)}</blockquote>${has(t.image) ? `<button type="button" class="c-go" data-zoom="${esc(t.image)}" data-zoom-alt="${esc(t.imageAlt || t.vendor)}" data-zoom-cap="${esc(t.note || "")}">원본 메시지 보기</button>` : ""}</div>`).join("")}
         ${has(p.link) ? `<a class="btn btn-dark" href="${esc(p.link)}" target="_blank" rel="noopener">결과물 보기</a>` : ""}
